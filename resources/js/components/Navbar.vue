@@ -54,18 +54,19 @@ export default {
 
             await Promise.all(dataPromises);
 
-            console.log('dupa', this.postData);
             const isValid = this.validatePostData(this.postData);
             if(!isValid){
                 return alert('Please fill all fields');
-            }
+            }else{
             const response = await fetch('/generate-files', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 },
                 body: JSON.stringify(this.postData),
             });
+        }
 
         },
         validatePostData(postData){
