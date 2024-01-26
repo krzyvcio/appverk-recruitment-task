@@ -37,14 +37,14 @@ export default {
                 new Promise((resolve) => {
                     this.emitter.once('provide-data-module-settings', (data) => {
                         const { clickout, width, height, top, left } = data;
-                       this.postData = {
-                            ...this.postData,
-                            clickout,
-                            width,
-                            height,
-                            top,
-                            left,
-                        };
+                    this.postData = {
+                        ...this.postData,
+                        clickout: String(clickout),
+                        width: String(width),
+                        height: String(height),
+                        top: String(top),
+                        left: String(left),
+                    };
                         
                         resolve();
                     });
@@ -74,6 +74,7 @@ export default {
             if(selectedModule === null || clickout === null || width === null || height === null || top === null || left === null){
                 return false;
             }
+            console.log(postData);
             return true;
         }
     },
