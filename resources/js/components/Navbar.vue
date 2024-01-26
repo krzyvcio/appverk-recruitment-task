@@ -37,15 +37,15 @@ export default {
                 new Promise((resolve) => {
                     this.emitter.once('provide-data-module-settings', (data) => {
                         const { clickout, width, height, top, left } = data;
-                    this.postData = {
-                        ...this.postData,
-                        clickout: String(clickout),
-                        width: String(width),
-                        height: String(height),
-                        top: String(top),
-                        left: String(left),
-                    };
-                        
+                        this.postData = {
+                            ...this.postData,
+                            clickout: String(clickout),
+                            width: String(width),
+                            height: String(height),
+                            top: String(top),
+                            left: String(left),
+                        };
+
                         resolve();
                     });
                     this.emitter.emit('get-data-module-settings');
@@ -55,30 +55,47 @@ export default {
             await Promise.all(dataPromises);
 
             const isValid = this.validatePostData(this.postData);
-            if(!isValid){
+            if (!isValid) {
                 return alert('Please fill all fields');
-            }else{
-            const response = await fetch('/generate-files', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: JSON.stringify(this.postData),
-            });
-        }
+            } else {
+                const response = await fetch('/generate-files', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify(this.postData),
+                });
+
+                const blob = await response.blob();
+
+                const url = window.URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+
+                link.href = url;
+                link.download = 'module.zip'; // or any other filename you want
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                document.body.removeChild(link);
+
+
+            }
 
         },
-        validatePostData(postData){
+        validatePostData(postData) {
             const { selectedModule, clickout, width, height, top, left } = postData;
-            if(selectedModule === null || clickout === null || width === null || height === null || top === null || left === null){
+            if (selectedModule === null || clickout === null || width === null || height === null || top === null || left === null) {
                 return false;
             }
-            console.log(postData);
+
             return true;
         }
     },
-    
+
 }
 </script>
   

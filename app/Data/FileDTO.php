@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Data;
 
 class FileDTO
@@ -22,4 +23,5 @@ class FileDTO
         return $this->path;
     }
 }
+
 ?>

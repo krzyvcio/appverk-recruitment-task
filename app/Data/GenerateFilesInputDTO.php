@@ -12,10 +12,11 @@ class GenerateFilesInputDTO
     private ?string $top;
     private ?string $left;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
 
     }
+
     public function getSelectedModule(): string
     {
         return $this->selectedModule;
@@ -23,7 +24,7 @@ class GenerateFilesInputDTO
 
     public function setSelectedModule(string $selectedModule): void
     {
-        $this->selectedModule = (string) $selectedModule;
+        $this->selectedModule = (string)$selectedModule;
     }
 
     public function getClickout(): string
@@ -33,7 +34,7 @@ class GenerateFilesInputDTO
 
     public function setClickout(string $clickout): void
     {
-        $this->clickout = (string) $clickout;
+        $this->clickout = (string)$clickout;
     }
 
     public function getWidth(): string
@@ -43,7 +44,7 @@ class GenerateFilesInputDTO
 
     public function setWidth(string $width): void
     {
-        $this->width = (string) $width;
+        $this->width = (string)$width;
     }
 
     public function getHeight(): string
@@ -53,7 +54,7 @@ class GenerateFilesInputDTO
 
     public function setHeight(string $height): void
     {
-        $this->height = (string) $height;
+        $this->height = (string)$height;
     }
 
     public function getTop(): string
@@ -63,7 +64,7 @@ class GenerateFilesInputDTO
 
     public function setTop(string $top): void
     {
-        $this->top = (string) $top;
+        $this->top = (string)$top;
     }
 
     public function getLeft(): string
@@ -73,7 +74,7 @@ class GenerateFilesInputDTO
 
     public function setLeft(string $left): void
     {
-        $this->left = (string) $left;
+        $this->left = (string)$left;
     }
 
 }

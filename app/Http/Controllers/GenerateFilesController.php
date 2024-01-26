@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Data\GenerateFilesInputDTO;
 use App\Services\GenerateFiles\GenerateFilesServiceInterface;
-use Illuminate\Http\Request;
 use App\Validators\GenerateFilesInputValidator;
+use Exception;
+use Illuminate\Http\Request;
+use Throwable;
 
 class GenerateFilesController extends Controller
 {
 
     public function __construct(
         private readonly GenerateFilesServiceInterface $generateFilesService,
-        private readonly GenerateFilesInputValidator $validator
-    ) {
+        private readonly GenerateFilesInputValidator   $validator
+    )
+    {
     }
 
 
@@ -44,25 +47,19 @@ class GenerateFilesController extends Controller
 
 
             $isValid = $this->validator->validate($inputDTO);
-            (false === $isValid) ? throw new \Exception('Invalid input') : null;
-
+            (false === $isValid) ? throw new Exception('Invalid input') : null;
 
 
             //return response as file for download
 
-            $tempFolderPath = $this->generateFilesService->getUniqueTempSubFolderForRequest();
             // Generate files in the temporary subfolder
-            $generatedZipPath = $this->generateFilesService->generateFiles($inputDTO, $tempFolderPath);
+            $generatedZipPath = $this->generateFilesService->generateFiles($inputDTO);
 
             // Return response as file for download
-            $response = response()->download($generatedZipPath)->deleteFileAfterSend(true);
-
-            // Delete the temporary subfolder
-            $this->generateFilesService->removeTempFolder($tempFolderPath);
+            $response = response()->download($generatedZipPath, 'module.zip')->deleteFileAfterSend(true);
 
             return $response;
-
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error,',
                 'message' => $e->getMessage(),

@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Data\GenerateFilesInputDTO;
 use App\Services\LogService\LoggerServiceInterface;
+use Exception;
+use Throwable;
 
 
 class CreateCSSTemplateHelper
@@ -13,13 +15,14 @@ class CreateCSSTemplateHelper
 
     public function __construct(
         private readonly LoggerServiceInterface $loggerService
-    ) {
+    )
+    {
     }
 
     public function createCSSTemplate(GenerateFilesInputDTO $inputDTO)
     {
         if (!$inputDTO) {
-            throw new \Exception('InputDTO is null');
+            throw new Exception('InputDTO is null');
         }
 
         try {
@@ -37,10 +40,10 @@ class CreateCSSTemplateHelper
                 default:
                     break;
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->loggerService->logError($e->getMessage());
 
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
         return $css;
 
